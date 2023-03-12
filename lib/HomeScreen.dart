@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final isAdmin = prefs.getString('isAdmin');
     setState(() {
       print(isAdmin);
+      
       isAdmin1 = isAdmin;
       if (widget.mode == "" && widget.mode2 == "") {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
