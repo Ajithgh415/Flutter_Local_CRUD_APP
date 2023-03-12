@@ -1,0 +1,10 @@
+Hi Indranil,
+
+
+Below Mentioned Driver App apis are the response is not coming 
+
+1. DRP data for the user 9791592066 is returning empty data.
+2. In Home Screen USER POST INSERT api giving 401 error when we post image without content body 
+3. In Timeline Screen USER POST INSERT api giving 401 error when we post image without content body
+4. IN MESSENGER LIST FETCH API is Returning Duplicate Values
+5. IN MESSENGER SCREEN USER LIST FETCH API returning Single Value When we send request parameter as '0' ALL
