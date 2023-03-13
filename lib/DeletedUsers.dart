@@ -1,9 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 
@@ -27,17 +24,11 @@ class _DeletedUsersState extends State<DeletedUsers> {
 
   _loadInitial() async {
     setState(() {
+      // Get the DeletedUser List function calling
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         final auth = Provider.of<UserProvider>(context, listen: false);
         auth.getDeletedUserList(context);
       });
-
-      // else {
-      //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      //     final auth = Provider.of<UserProvider>(context, listen: false);
-      //     auth.getUserData(context, widget.userId!, "Admin");
-      //   });
-      // }
     });
   }
 
@@ -48,42 +39,6 @@ class _DeletedUsersState extends State<DeletedUsers> {
           appBar: AppBar(
             title: const Text('Deleted User List Page'),
             actions: [
-              // Padding(
-              //   padding: const EdgeInsets.only(right: 16.0),
-              //   child: IconButton(
-              //     icon: const Icon(Icons.personal_injury_rounded),
-              //     onPressed: () {
-              //       setState(() {
-              //         showDialog(
-              //           context: context,
-              //           builder: (BuildContext context) {
-              //             return AlertDialog(
-              //               title: Text('Logout User?'),
-              //               content: Text('Are you sure you want to logout?'),
-              //               actions: <Widget>[
-              //                 TextButton(
-              //                   onPressed: () =>
-              //                       Navigator.of(context).pop(false),
-              //                   child: Text('CANCEL'),
-              //                 ),
-              //                 TextButton(
-              //                   onPressed: () =>
-              //                       Navigator.of(context).pop(true),
-              //                   child: Text('OK'),
-              //                 ),
-              //               ],
-              //             );
-              //           },
-              //         ).then((value) {
-              //           if (value != null && value) {
-              //             // Perform delete operation here
-              //             object.logout(context);
-              //           }
-              //         });
-              //       });
-              //     },
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.only(right: 16.0),
                 child: IconButton(
@@ -94,18 +49,18 @@ class _DeletedUsersState extends State<DeletedUsers> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Logout User?'),
-                            content: Text('Are you sure you want to logout?'),
+                            title: const Text('Logout User?'),
+                            content: const Text('Are you sure you want to logout?'),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () =>
                                     Navigator.of(context).pop(false),
-                                child: Text('CANCEL'),
+                                child: const Text('CANCEL'),
                               ),
                               TextButton(
                                 onPressed: () =>
                                     Navigator.of(context).pop(true),
-                                child: Text('OK'),
+                                child: const Text('OK'),
                               ),
                             ],
                           );
@@ -141,7 +96,7 @@ class _DeletedUsersState extends State<DeletedUsers> {
                           )),
                       child: TypeAheadField(
                         textFieldConfiguration: TextFieldConfiguration(
-                          style: TextStyle(color: Colors.black, fontSize: 14),
+                          style: const TextStyle(color: Colors.black, fontSize: 14),
                           controller: object.searchController,
                           textInputAction: TextInputAction.search,
                           onTap: () {
@@ -157,7 +112,7 @@ class _DeletedUsersState extends State<DeletedUsers> {
                               }
                             });
                           },
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: InputBorder.none,
                             suffixIcon: Icon(
                               Icons.search,
@@ -208,13 +163,13 @@ class _DeletedUsersState extends State<DeletedUsers> {
                         hideOnLoading: true,
                         itemBuilder: (context, dynamic suggestion) {
                           return Container(
-                            padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
                             child: Text(suggestion.name ?? ""),
                           );
                         },
                         noItemsFoundBuilder: (context) => Container(
                           height: MediaQuery.of(context).size.height * 0.1,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'No data found.',
                             ),
@@ -238,14 +193,14 @@ class _DeletedUsersState extends State<DeletedUsers> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Expanded(
                 child: object.removeduserlist.isEmpty
                     ? Center(
                         child: Container(
-                          child: Text("No Users1 Available"),
+                          child: const Text("No Users1 Available"),
                         ),
                       )
                     : ListView.builder(
@@ -266,11 +221,10 @@ class _DeletedUsersState extends State<DeletedUsers> {
                                 ],
                               ),
                               trailing: IconButton(
-                                icon: Icon(Icons.remove_red_eye_rounded),
+                                icon: const Icon(Icons.remove_red_eye_rounded),
                                 onPressed: () {
                                   // Handle edit button tap
                                   setState(() {
-                                    print(user.name);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -281,11 +235,6 @@ class _DeletedUsersState extends State<DeletedUsers> {
                                   });
                                 },
                               ),
-                              // Icon(
-                              //   Icons.delete,
-                              //   color: Colors.red,
-                              //   size: 20,
-                              // ),
                               leading: ClipRRect(
                                   borderRadius: new BorderRadius.circular(50.0),
                                   child: user.profilePicture != null
@@ -299,9 +248,6 @@ class _DeletedUsersState extends State<DeletedUsers> {
                                           fit: BoxFit.cover,
                                           height: 90,
                                           width: 90)),
-                              onTap: () {
-                                // Navigate to the user details screen
-                              },
                             ),
                           );
                         },

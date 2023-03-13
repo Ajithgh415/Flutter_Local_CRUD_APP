@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'UserModelClass.dart';
 
 class DatabaseHelper {
+  
   static final _databaseName = "mydatabase.db";
   static final _databaseVersion = 1;
 
@@ -64,7 +65,8 @@ class DatabaseHelper {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
-
+   
+  // Get All the Users in the table
   Future<List<User>> getAllUsers(int isDelete) async {
     final db = await database;
     final result = await db
@@ -73,18 +75,20 @@ class DatabaseHelper {
     return result.map((json) => User.fromMap(json)).toList();
   }
 
+  // Update the user data based on the user id
   Future<int> updateUser(User user) async {
     final db = await database;
     return await db.update(table, user.toMap(),
         where: '$columnID = ?', whereArgs: [user.id]);
   }
-
+  
+  // Delet the user from the table 
   Future<int> deleteUser(User user) async {
     final db = await database;
     return await db.delete(table, where: '$columnID = ?', whereArgs: [user.id]);
   }
 
-  // query a user from the database
+  // login the user 
   Future<User?> queryUser(String emailOrPhoneNumber, String password) async {
     Database db = await instance.database;
     List<Map<String, dynamic>> maps = await db.query(table,
@@ -98,6 +102,7 @@ class DatabaseHelper {
     }
   }
 
+  // Get the user details based on isdeleted condition
   Future<User?> queryUserDetails(String userId, int isDeleted) async {
     Database db = await instance.database;
     List<Map<String, dynamic>> maps = await db.query(table,

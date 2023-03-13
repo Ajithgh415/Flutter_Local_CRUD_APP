@@ -23,6 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       print(isLoggedIn);
       print(isAdmin);
+      
+      // If user already login to the app the user will gets to the home screen
       if (isLoggedIn == "true") {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

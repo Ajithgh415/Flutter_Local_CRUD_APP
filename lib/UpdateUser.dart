@@ -31,6 +31,7 @@ class _UpdateUserState extends State<UpdateUser> {
     final userId = prefs.getString('user_id');
     // final isAdmin = prefs.getString('isAdmin');
     setState(() {
+      // If ViewMode == '1' consider as the delted user cannot able to update
       if (widget.viewMode == '1') {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           final auth = Provider.of<UserProvider>(context, listen: false);
@@ -62,16 +63,16 @@ class _UpdateUserState extends State<UpdateUser> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Logout User?'),
-                          content: Text('Are you sure you want to logout?'),
+                          title: const Text('Logout User?'),
+                          content: const Text('Are you sure you want to logout?'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(false),
-                              child: Text('CANCEL'),
+                              child: const Text('CANCEL'),
                             ),
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(true),
-                              child: Text('OK'),
+                              child: const Text('OK'),
                             ),
                           ],
                         );
@@ -128,7 +129,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                   object.profileImageModalBottomSheet(context);
                                 });
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.camera_alt,
                                 color: Colors.blue,
                               ),
@@ -138,7 +139,7 @@ class _UpdateUserState extends State<UpdateUser> {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   getTextFormField(
@@ -149,7 +150,7 @@ class _UpdateUserState extends State<UpdateUser> {
                     isEnable: !object.editable,
                     isName: true,
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   getTextFormField(
                     controller: object.email,
                     icon: Icons.email,
@@ -157,7 +158,7 @@ class _UpdateUserState extends State<UpdateUser> {
                     hintName: 'Email',
                     isEnable: !object.editable,
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   getTextFormField(
                     controller: object.phone,
                     icon: Icons.person_outline,
@@ -166,7 +167,7 @@ class _UpdateUserState extends State<UpdateUser> {
                     isEnable: !object.editable,
                     isPhone: true,
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   getTextFormField(
                     controller: object.password,
                     icon: Icons.lock,
@@ -174,7 +175,7 @@ class _UpdateUserState extends State<UpdateUser> {
                     isObscureText: true,
                     isEnable: !object.editable,
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Visibility(
                     visible: widget.viewMode=="",
                     child: ElevatedButton(
@@ -200,7 +201,7 @@ class _UpdateUserState extends State<UpdateUser> {
                                 // }
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                     content: Text('Image Should not empty'),
                                     backgroundColor: Colors.red,
                                   ),
@@ -214,12 +215,12 @@ class _UpdateUserState extends State<UpdateUser> {
                       },
                       child: Text(
                         object.editable == true ? 'Edit' : 'Save',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                       // onPressed: signUp,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ],

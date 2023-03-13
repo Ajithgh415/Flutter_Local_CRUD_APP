@@ -25,7 +25,7 @@ class getTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      padding:const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextFormField(
         controller: controller,
         obscureText: isObscureText,
@@ -50,11 +50,11 @@ class getTextFormField extends StatelessWidget {
           return null;
         },
         decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
+          enabledBorder:const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(30.0)),
             borderSide: BorderSide(color: Colors.transparent),
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder:const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(30.0)),
             borderSide: BorderSide(color: Colors.blue),
           ),

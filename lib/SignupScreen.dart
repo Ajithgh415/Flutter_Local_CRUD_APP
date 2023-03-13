@@ -23,7 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Consumer<UserProvider>(builder: (context, object, child) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Login with Signup'),
+          title: const Text('Login with Signup'),
         ),
         body: Center(
           child: Form(
@@ -59,7 +59,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 object.profileImageModalBottomSheet(context);
                               });
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.camera_alt,
                               color: Colors.blue,
                             ),
@@ -68,7 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   getTextFormField(
@@ -77,27 +77,27 @@ class _SignupScreenState extends State<SignupScreen> {
                       inputType: TextInputType.name,
                       isName: true,
                       hintName: 'Name'),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   getTextFormField(
                       controller: object.email,
                       icon: Icons.email,
                       inputType: TextInputType.emailAddress,
                       hintName: 'Email'),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   getTextFormField(
                       controller: object.phone,
                       icon: Icons.person_outline,
                       inputType: TextInputType.phone,
                       isPhone: true,
                       hintName: 'Phone Number'),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   getTextFormField(
                     controller: object.password,
                     icon: Icons.lock,
                     hintName: 'Password',
                     isObscureText: true,
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   getTextFormField(
                     controller: object.confirmPassword,
                     icon: Icons.lock,
@@ -105,7 +105,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     isObscureText: true,
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
@@ -115,7 +115,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           object.signUp(context);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text('Please Select Image'),
                               backgroundColor: Colors.red,
                             ),
@@ -123,28 +123,28 @@ class _SignupScreenState extends State<SignupScreen> {
                         }
                       });
                     },
-                    child: Text(
+                    child: const Text(
                       'Signup',
                       style: TextStyle(color: Colors.white),
                     ),
                     // onPressed: signUp,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Does you have account? '),
+                        const Text('Does you have account? '),
                         ElevatedButton(
                           // textColor: Colors.blue,
-                          child: Text('Sign In'),
+                          child: const Text('Sign In'),
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => LoginScreen()),
+                                    builder: (_) => const LoginScreen()),
                                 (Route<dynamic> route) => false);
                           },
                         )

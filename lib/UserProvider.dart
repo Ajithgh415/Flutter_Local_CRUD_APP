@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:local_app_task/Databasehelper.dart';
@@ -9,7 +8,6 @@ import 'package:local_app_task/LoginScreen.dart';
 import 'package:local_app_task/UserModelClass.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -50,7 +48,7 @@ class UserProvider extends ChangeNotifier {
 
   final _picker = ImagePicker();
 
-  final formKey = new GlobalKey<FormState>();
+  final formKey =  GlobalKey<FormState>();
 
   bool editable = false;
 
@@ -69,6 +67,8 @@ class UserProvider extends ChangeNotifier {
   String userid = "";
 
   String get _userid => userid;
+
+  //Bottom sheet select the image 
 
   void profileImageModalBottomSheet(context) {
     showModalBottomSheet(
@@ -93,12 +93,13 @@ class UserProvider extends ChangeNotifier {
         });
   }
 
-  User? _authenticatedUser;
+  // User? _authenticatedUser;
 
-  User? get authenticatedUser {
-    return _authenticatedUser;
-  }
+  // User? get authenticatedUser {
+  //   return _authenticatedUser;
+  // }
 
+  // Get the Deleted User Data based on the user Id and is deleted ==1
   void getDeletedUserData(BuildContext context, String userId) async {
     final user2 = await DatabaseHelper.instance.queryUserDetails(userId, 1);
     if (user2 != null) {
@@ -121,6 +122,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Get the User Data based on isDeleted==0
   void getUserData(BuildContext context, String userId, String mode) async {
     final user2 = await DatabaseHelper.instance.queryUserDetails(userId, 0);
     if (user2 != null) {
@@ -132,6 +134,7 @@ class UserProvider extends ChangeNotifier {
       password.text = user2.password.toString();
       _profileImageUrl = user2.profilePicture.toString();
       editable = true;
+      // mode=="Admin" not to store the details in Shared Preferences
       if (mode == "") {
         setSP(user2);
       } else if (mode == "Admin" && userId != "") {
@@ -148,6 +151,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //get the search list data from the pattern
   fetchSearchAutoComplete(String pattern, List<User> userListt) {
     return userListt
         .where((element) =>
@@ -166,6 +170,7 @@ class UserProvider extends ChangeNotifier {
         .toList();
   }
 
+  // Authentication to check login or sigup and call the db to fetch an dinsert details
   Future<void> authenticate(
       BuildContext context,
       String emailOrPhoneNumber,
@@ -175,8 +180,10 @@ class UserProvider extends ChangeNotifier {
       String profilePicString,
       String emailString) async {
     try {
+
+      //Login Function
       if (authMode == AuthMode.Login) {
-        // Login
+        // Admin Login
         if (emailOrPhoneNumber == "Admin" && passwordString == "0000") {
           final user1 = await DatabaseHelper.instance.getAllUsers(0);
           final SharedPreferences sp = await _pref;
@@ -193,12 +200,13 @@ class UserProvider extends ChangeNotifier {
                       )),
               (route) => false);
         } else {
+          //Normal Login
           final user = await DatabaseHelper.instance
               .queryUser(emailOrPhoneNumber, passwordString);
           notifyListeners();
           if (user != null) {
             print(user.toMap().toString());
-            _authenticatedUser = user;
+            // _authenticatedUser = user;
             editable = true;
             userid = user.id.toString();
             email.text = user.email.toString();
@@ -239,6 +247,7 @@ class UserProvider extends ChangeNotifier {
         final existingUser = await DatabaseHelper.instance
             .queryUser(emailOrPhoneNumber, passwordString);
         if (existingUser != null) {
+          //If User already exists in the db
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -249,6 +258,7 @@ class UserProvider extends ChangeNotifier {
           notifyListeners();
           // throw "An account with this email/phone number already exists";
         } else {
+          //Insert the new user to the db
           final now = DateTime.now().millisecondsSinceEpoch;
           // Generate a random string of length 4
           final random = Random();
@@ -265,7 +275,7 @@ class UserProvider extends ChangeNotifier {
               profilePicture: profilePicString,
               isDeleted: 0);
           await DatabaseHelper.instance.insert(user);
-          _authenticatedUser = user;
+          // _authenticatedUser = user;
           _profileImage = File("");
           name.text = "";
           phone.text = '';
@@ -295,6 +305,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  // Update the user data to the db
   void updateUser(
       BuildContext context, User user, String mode, String mode2) async {
     if (formKey.currentState!.validate()) {
@@ -332,6 +343,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+ //Remove the user function from the db
   void removeUser(BuildContext context, User user) async {
     await DatabaseHelper.instance.updateUser(user);
     ScaffoldMessenger.of(context).showSnackBar(
@@ -346,6 +358,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Get User List function
   void getUserList(BuildContext context) async {
     final user1 = await DatabaseHelper.instance.getAllUsers(0);
     final SharedPreferences sp = await _pref;
@@ -355,7 +368,8 @@ class UserProvider extends ChangeNotifier {
     userlist = user1;
     notifyListeners();
   }
-
+ 
+  // Get Deleted userlist function
   void getDeletedUserList(BuildContext context) async {
     final user1 = await DatabaseHelper.instance.getAllUsers(1);
     final SharedPreferences sp = await _pref;
@@ -366,6 +380,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+ // Clear Data function
   void clearData() async {
     name.text = "";
     email.text = "";
@@ -389,8 +404,9 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+ // Logout function
   void logout(BuildContext context) {
-    _authenticatedUser = null;
+    // _authenticatedUser = null;
     clearData();
     Navigator.pushAndRemoveUntil(
         context,
@@ -399,6 +415,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Sign up function
   signUp(BuildContext context) async {
     String uname = _name.text.trim();
     String email = _email.text.trim();
@@ -419,27 +436,11 @@ class UserProvider extends ChangeNotifier {
         // formKey.currentState!.save();
         authenticate(context, phone, passwd, AuthMode.Signup, uname,
             profileImageUrl, email);
-        // await DatabaseHel,per.saveData(uModel).then((userData) {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     SnackBar(
-        //       content: Text('Sucessfully Save'),
-        //       backgroundColor: Colors.green,
-        //     ),
-        //   );
-
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (_) => LoginScreen()));
-        // }).catchError((error) {
-        //   print(error);
-        //   SnackBar(
-        //     content: Text("Error: Data Save Fail"),
-        //     backgroundColor: Colors.red,
-        //   );
-        // });
       }
     }
   }
 
+  // Login function 
   login(BuildContext context) async {
     print(_email.text.toString());
     String email = _email.text.trim();
@@ -462,25 +463,11 @@ class UserProvider extends ChangeNotifier {
       );
     } else {
       authenticate(context, email, passwd, AuthMode.Login, "", "", "");
-
       notifyListeners();
-      // await dbHelper.getLoginUser(uid, passwd).then((userData) {
-      //   if (userData != null) {
-      //     setSP(userData).whenComplete(() {
-      //       Navigator.pushAndRemoveUntil(
-      //           context,
-      //           MaterialPageRoute(builder: (_) => HomeForm()),
-      //           (Route<dynamic> route) => false);
-      //     });
-      //   } else {
-      //     alertDialog(context, "Error: User Not Found");
-      //   }
-      // }).catchError((error) {
-      //   print(error);
-      // });
     }
   }
-
+ 
+  // Set Local Storage
   Future setSP(User user) async {
     final SharedPreferences sp = await _pref;
     print('Velue Setting');
@@ -493,7 +480,8 @@ class UserProvider extends ChangeNotifier {
     sp.setString("IsLoggedIn", "true");
     notifyListeners();
   }
-
+  
+  // Profile Camera Image 
   Future profileCameraImage(mode) async {
     final pickedfile = await _picker.pickImage(
         source: mode == "C" ? ImageSource.camera : ImageSource.gallery,

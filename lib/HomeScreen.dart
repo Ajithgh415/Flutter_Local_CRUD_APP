@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:local_app_task/DeletedUsers.dart';
 import 'package:local_app_task/UpdateUser.dart';
@@ -36,26 +34,20 @@ class _HomeScreenState extends State<HomeScreen> {
     final userId = prefs.getString('user_id');
     final isAdmin = prefs.getString('isAdmin');
     setState(() {
-      print(isAdmin);
-      
       isAdmin1 = isAdmin;
+      // If mode && mode2 == "" consider as the normsl user to show the home section details
       if (widget.mode == "" && widget.mode2 == "") {
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           final auth = Provider.of<UserProvider>(context, listen: false);
           auth.getUserData(context, userId!, "");
         });
       } else if (widget.mode == "Admin" && widget.mode2 == "") {
+        // If mode="Admin" && mode2=="" it will consider as the admin page to get users list
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           final auth = Provider.of<UserProvider>(context, listen: false);
           auth.getUserList(context);
         });
       }
-      // else {
-      //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      //     final auth = Provider.of<UserProvider>(context, listen: false);
-      //     auth.getUserData(context, widget.userId!, "Admin");
-      //   });
-      // }
     });
   }
 
@@ -77,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DeletedUsers()));
+                              builder: (context) => const DeletedUsers()));
                     });
                   },
                 ),
@@ -93,23 +85,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Logout User?'),
-                          content: Text('Are you sure you want to logout?'),
+                          title: const Text('Logout User?'),
+                          content: const Text('Are you sure you want to logout?'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(false),
-                              child: Text('CANCEL'),
+                              child: const Text('CANCEL'),
                             ),
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(true),
-                              child: Text('OK'),
+                              child: const Text('OK'),
                             ),
                           ],
                         );
                       },
                     ).then((value) {
                       if (value != null && value) {
-                        // Perform delete operation here
                         object.logout(context);
                       }
                     });
@@ -140,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: TypeAheadField(
                             textFieldConfiguration: TextFieldConfiguration(
                               style:
-                                  TextStyle(color: Colors.black, fontSize: 14),
+                                  const TextStyle(color: Colors.black, fontSize: 14),
                               controller: object.searchController,
                               textInputAction: TextInputAction.search,
                               onTap: () {
@@ -156,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   }
                                 });
                               },
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 suffixIcon: Icon(
                                   Icons.search,
@@ -213,13 +204,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             hideOnLoading: true,
                             itemBuilder: (context, dynamic suggestion) {
                               return Container(
-                                padding: EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(20),
                                 child: Text(suggestion.name ?? ""),
                               );
                             },
                             noItemsFoundBuilder: (context) => Container(
                               height: MediaQuery.of(context).size.height * 0.1,
-                              child: Center(
+                              child: const Center(
                                 child: Text(
                                   'No data found.',
                                 ),
@@ -243,14 +234,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Expanded(
                     child: object.userlist.isEmpty
                         ? Center(
                             child: Container(
-                              child: Text("No Users Available"),
+                              child: const Text("No Users Available"),
                             ),
                           )
                         : ListView.builder(
@@ -279,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         SizedBox(
                                           width: 30,
                                           child: IconButton(
-                                            icon: Icon(Icons.edit_square),
+                                            icon: const Icon(Icons.edit_square),
                                             onPressed: () {
                                               // Handle edit button tap
                                               setState(() {
@@ -299,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         SizedBox(
                                           width: 30,
                                           child: IconButton(
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.delete,
                                               color: Colors.red,
                                             ),
@@ -312,8 +303,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       (BuildContext context) {
                                                     return AlertDialog(
                                                       title:
-                                                          Text('Remove User?'),
-                                                      content: Text(
+                                                          const Text('Remove User?'),
+                                                      content: const Text(
                                                           'Are you sure you want to remove this user?'),
                                                       actions: <Widget>[
                                                         TextButton(
@@ -321,14 +312,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               Navigator.of(
                                                                       context)
                                                                   .pop(false),
-                                                          child: Text('CANCEL'),
+                                                          child: const Text('CANCEL'),
                                                         ),
                                                         TextButton(
                                                           onPressed: () =>
                                                               Navigator.of(
                                                                       context)
                                                                   .pop(true),
-                                                          child: Text('Remove'),
+                                                          child: const Text('Remove'),
                                                         ),
                                                       ],
                                                     );
@@ -425,7 +416,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             context);
                                       });
                                     },
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.camera_alt,
                                       color: Colors.blue,
                                     ),
@@ -435,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         getTextFormField(
@@ -445,7 +436,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           hintName: 'Name',
                           isEnable: !object.editable,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         getTextFormField(
                           controller: object.email,
                           icon: Icons.email,
@@ -453,7 +444,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           hintName: 'Email',
                           isEnable: !object.editable,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         getTextFormField(
                           controller: object.phone,
                           icon: Icons.person_outline,
@@ -461,7 +452,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           hintName: 'Phone Number',
                           isEnable: !object.editable,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         getTextFormField(
                           controller: object.password,
                           icon: Icons.lock,
@@ -469,7 +460,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           isObscureText: true,
                           isEnable: !object.editable,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
@@ -494,7 +485,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     }
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
+                                      const SnackBar(
                                         content: Text('Image Should not empty'),
                                         backgroundColor: Colors.red,
                                       ),
@@ -511,11 +502,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           child: Text(
                             object.editable == true ? 'Edit' : 'Save',
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           // onPressed: signUp,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                       ],
